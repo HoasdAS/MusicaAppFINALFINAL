@@ -27,7 +27,7 @@ public class MainActivity extends ListActivity {
     private static final int SKIP_SONG = 1000000; //16 mins (skip)
 
     private MediaCursorAdapter mediaAdapter = null;
-    private TextView selelctedFile = null;
+    public TextView selelctedFile = null;
     private SeekBar seekbar = null;
     private MediaPlayer player = null;
     private ImageButton playButton = null;
@@ -35,9 +35,14 @@ public class MainActivity extends ListActivity {
     private ImageButton nextButton = null;
     private ImageButton ffButton = null;
     private ImageButton rewButton = null;
+    private int fileList=0;
+    private int currentSongIndex = 0;
+
+
 
     private boolean isStarted = true;
     private String currentFile = "";
+    private String nextFile = "";
     private boolean isMoveingSeekBar = false;
 
     private final Handler handler = new Handler();
@@ -86,13 +91,18 @@ public class MainActivity extends ListActivity {
 
     }
 
-    @Override
+
     protected void onListItemClick(ListView list, View view, int position, long id) {
         super.onListItemClick(list, view, position, id);
 
         currentFile = (String) view.getTag();
 
         startPlay(currentFile);
+
+
+
+        nextFile = (String) view.getTag();
+
     }
 
     @Override
@@ -112,6 +122,8 @@ public class MainActivity extends ListActivity {
 
         selelctedFile.setText(file);
         seekbar.setProgress(0);
+
+
 
         player.stop();
         player.reset();
@@ -145,6 +157,9 @@ public class MainActivity extends ListActivity {
 
         isStarted = false;
     }
+
+
+
 
     private void updatePosition() {
         handler.removeCallbacks(updatePositionRunnable);
@@ -272,13 +287,31 @@ public class MainActivity extends ListActivity {
         }
     };
 
+
+    //fileList
+
+
+
+
+
+
     private MediaPlayer.OnCompletionListener onCompletion = new MediaPlayer.OnCompletionListener() {
+
+
+
 
         @Override
         public void onCompletion(MediaPlayer mp) {
+
+
+
             stopPlay();
+            startPlay(nextFile);
+
         }
     };
+
+
 
     private MediaPlayer.OnErrorListener onError = new MediaPlayer.OnErrorListener() {
 
